@@ -4,16 +4,23 @@ import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import UpdateUserAvatarService from './UpdateUserAvatarService';
 import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
 
+let fakeUsersRepository: FakeUsersRepository;
+let fakeStorageProvider: FakeStorageProvider;
+let updateUserAvatar: UpdateUserAvatarService;
+
 describe('UpdateUserAvatar', () => {
-  it('should be able to create a new user', async () => {
 
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
+  beforeEach(() => {
 
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeStorageProvider = new FakeStorageProvider();
 
-    const updateUserAvatar = new UpdateUserAvatarService(
+    updateUserAvatar = new UpdateUserAvatarService(
       fakeUsersRepository, fakeStorageProvider
     );
+  })
+
+  it('should be able to create a new user', async () => {
 
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
@@ -32,19 +39,7 @@ describe('UpdateUserAvatar', () => {
 
   it('should not be able to update avatar from non existing user', async () => {
 
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
-
-
-    const updateUserAvatar = new UpdateUserAvatarService(
-      fakeUsersRepository, fakeStorageProvider
-    );
-
-    const user = await
-
-    await
-
-    expect(updateUserAvatar.execute({
+    await expect(updateUserAvatar.execute({
       user_id: 'non-existing-user',
       avatarFilename: 'avatar.jpg',
     })).rejects.toBeInstanceOf(AppError);
@@ -52,9 +47,6 @@ describe('UpdateUserAvatar', () => {
   });
 
   it('should delete old avatar when it does update', async () => {
-
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
 
     const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
 
@@ -78,9 +70,9 @@ describe('UpdateUserAvatar', () => {
       avatarFilename: 'avatar2.jpg',
     });
 
-    expect(deleteFile).toHaveBeenCalledWith('avatar.jpg')
+    await expect(deleteFile).toHaveBeenCalledWith('avatar.jpg')
 
-    expect(user.avatar).toBe('avatar2.jpg');
+    await expect(user.avatar).toBe('avatar2.jpg');
 
   });
 

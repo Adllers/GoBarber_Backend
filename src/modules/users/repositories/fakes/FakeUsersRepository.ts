@@ -7,7 +7,7 @@ import { uuid } from 'uuidv4';
 
 
 
-class UsersRepository  implements IUsersRepository {
+class FakeUsersRepository  implements IUsersRepository {
 
   private users: User[] = [];
 
@@ -52,4 +52,4 @@ class UsersRepository  implements IUsersRepository {
 
 }
 
-export default UsersRepository;
+export default FakeUsersRepository;

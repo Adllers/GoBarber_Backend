@@ -17,8 +17,10 @@ interface IRequest {
 class CreateAppointmentService {
 
   constructor(
+
     @inject('AppointmentsRepository')
-    private appointmentsRepository: IAppointmentsRepository
+    private appointmentsRepository: IAppointmentsRepository //from typescript -> using private, i don't need to do -> this.appointmensRepository = appointmentsRepository
+
   ) {}
 
   // async function -> return Promise

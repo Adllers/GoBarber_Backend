@@ -1,9 +1,11 @@
 import 'reflect-metadata';
 import express, { Request, Response, NextFunction} from 'express';
 import  cors from 'cors';
+
 // src/server.ts
 import 'express-async-errors';
 import routes from './routes/index';
+
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
 
@@ -16,7 +18,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 //route static files
-app.use('/files', express.static(uploadConfig.directory));
+app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use(routes);
 
 //middleware for errors
