@@ -7,6 +7,8 @@ import CreateAppointmentService from '@modules/appointments/services/CreateAppoi
 export default class AppointmentController {
 
   public async create(request: Request , response: Response): Promise<Response> {
+    // request.user to know about log from user in any part on system
+    const user_id = request.user.id;
 
     const { provider_id, date } = request.body;
 
@@ -16,7 +18,8 @@ export default class AppointmentController {
 
     const appointment = await createAppointment.execute({
       date: parsedDate,
-      provider_id: provider_id
+      provider_id: provider_id,
+      user_id,
     });
 
     return response.json(appointment)

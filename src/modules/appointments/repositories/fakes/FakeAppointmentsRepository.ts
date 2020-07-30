@@ -1,11 +1,11 @@
 import { uuid } from 'uuidv4';
-import { isEqual } from 'date-fns';
+import { isEqual, getMonth, getYear, getDate } from 'date-fns';
 import Appointment from '../../infra/typeorm/entities/Appointment';
 
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
-
-
+import IFindByMonthAppointmentsFromProviderDTO from '@modules/appointments/dtos/IFindByMonthAppointmentsFromProviderDTO';
+import IFindByDayAppointmentsFromProviderDTO from '@modules/appointments/dtos/IFindByDayAppointmentsFromProviderDTO';
 
 
 class AppointmentsRepository  implements IAppointmentsRepository {
@@ -20,11 +20,36 @@ class AppointmentsRepository  implements IAppointmentsRepository {
 
   }
 
-  public async create({date, provider_id}: ICreateAppointmentDTO): Promise<Appointment>{
+  public async findByMonthAppointmentsFromProvider({provider_id, month, year}: IFindByMonthAppointmentsFromProviderDTO): Promise <Appointment[]> {
+
+    const appointments = this.appointments.filter( appointment =>
+      appointment.provider_id == provider_id &&
+      getMonth(appointment.date) + 1 == month &&
+      getYear(appointment.date) == year
+    );
+
+    return appointments;
+
+  }
+
+  public async findByDayAppointmentsFromProvider({provider_id, day,  month, year}: IFindByDayAppointmentsFromProviderDTO): Promise <Appointment[]> {
+
+    const appointments = this.appointments.filter( appointment =>
+      appointment.provider_id == provider_id &&
+      getDate(appointment.date) + 1 == day &&
+      getMonth(appointment.date) + 1 == month &&
+      getYear(appointment.date) == year
+    );
+
+    return appointments;
+
+  }
+
+  public async create({date, provider_id, user_id}: ICreateAppointmentDTO): Promise<Appointment>{
 
     const appointment = new Appointment();
 
-    Object.assign(appointment, {id: uuid(), date, provider_id});
+    Object.assign(appointment, {id: uuid(), date, provider_id, user_id});
     // appointment.id = uuid();
     // appointment.date = date;
     // appointment.provider_id = provider_id;

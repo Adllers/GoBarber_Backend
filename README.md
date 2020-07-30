@@ -62,8 +62,8 @@
 
 - O Usuário deve poder listar todos os prestadores de serviço cadastrados
 - O Usuário deve poder listar os dias e horários disponíveis do més de um prestador selecionado
+- O Usuário deve poder listar horários disponíveis em um dia específico de um prestador
 - O usuário deve poder realizar um novo agendamento com um prestador
-
 
 **RNF**
 

@@ -28,6 +28,15 @@ class Appointment{
   @JoinColumn({ name: 'provider_id' })
   provider: User;
 
+
+  @Column()
+  user_id: string;
+
+  //many appointments to one user
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+
   // timestamp.. specific from postgres
   @Column('timestamp with time zone')
   date: Date;
