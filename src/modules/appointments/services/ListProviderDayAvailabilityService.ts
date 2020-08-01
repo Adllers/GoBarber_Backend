@@ -31,33 +31,36 @@ class ListProviderDayAvailabilityService {
   public async execute({ provider_id, day, month, year }: IRequest): Promise<IResponse> {
 
     const appointments = await this.appointmentsRepository.findByDayAppointmentsFromProvider({ provider_id, year, month, day });
-
+    console.log('teste');
     console.log(appointments);
 
     const hourStart = 8;
 
     const eachHourArray = Array.from( { length: 10 }, (_, index) => index + hourStart);
 
+    console.log(eachHourArray);
+
     const currentDate = new Date(Date.now());
 
+    console.log(currentDate);
 
     const availability = eachHourArray.map(hour => {
 
       const hasAppointmentInHour = appointments.find(
-        appointment => {
-          getHours(appointment.date) == hour
-        });
+        appointment => getHours(appointment.date) == hour,
+      );
 
-        const compareDate = new Date(year, month - 1, day, hour );
+      const compareDate = new Date(year, month - 1, day, hour );
 
-        //2020-05-20 08:00
+      //2020-05-20 08:00
 
-        return {
-          hour,
-          available: !hasAppointmentInHour && isAfter(compareDate, currentDate),
-        };
+      return {
+        hour,
+        available: !hasAppointmentInHour && isAfter(compareDate, currentDate),
+      };
 
     });
+    console.log(availability);
 
     return availability;
   }
