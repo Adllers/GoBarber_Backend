@@ -27,8 +27,10 @@ export default class EtherealMailProvider implements IMailProvider {
             user: account.user,
             pass: account.pass,
         },
-      })
+      });
 
+      console.log('createTransport!');
+      console.log(account);
       this.client = transporter;
 
     });
@@ -36,22 +38,24 @@ export default class EtherealMailProvider implements IMailProvider {
 
   public async sendMail({ to, from, subject, templateData }: ISendMailDTO): Promise<void> {
 
-    const message = await this.client.sendMail({
+    console.log('funfando sendmail com ethereal')
 
-        from: {
-          name: from?.name || 'Teste GoBarber',
-          address: from?.email || 'adller.eel.ufsc@gmail.com'
-        },
-        to: {
-          name: to.name,
-          address: to.email
-        },
-        subject,
-        html: await this.mailTemplateProvider.parse(templateData),
+    // const message = await this.client.sendMail({
 
-    });
+    //     from: {
+    //       name: from?.name || 'Teste GoBarber',
+    //       address: from?.email || 'adller.eel.ufsc@gmail.com'
+    //     },
+    //     to: {
+    //       name: to.name,
+    //       address: to.email
+    //     },
+    //     subject,
+    //     html: await this.mailTemplateProvider.parse(templateData),
 
-    console.log('Message sent: %s', message.messageId);
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message));
+    // });
+
+    // console.log('Message sent: %s', message.messageId);
+    // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message));
   }
 }

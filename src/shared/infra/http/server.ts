@@ -1,7 +1,8 @@
 import 'reflect-metadata';
+import 'dotenv/config';
 import express, { Request, Response, NextFunction} from 'express';
 import  cors from 'cors';
-
+import { errors } from 'celebrate';
 // src/server.ts
 import 'express-async-errors';
 import routes from './routes/index';
@@ -20,6 +21,9 @@ app.use(express.json());
 //route static files
 app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use(routes);
+
+
+app.use(errors());
 
 //middleware for errors
 app.use((err: Error, request: Request, response: Response, next: NextFunction) => {
