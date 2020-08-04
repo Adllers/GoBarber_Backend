@@ -1,13 +1,14 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import aws from 'aws-sdk';
 import mailConfig from '@config/mail';
+
 import { injectable, inject } from 'tsyringe';
 
 import IMailProvider from '../models/IMailProvider';
 import ISendMailDTO from '../dtos/ISendMailDTO';
 
 import IMailTemplateProvider from '@shared/container/providers/MailTemplateProvider/models/IMailTemplateProvider';
-import { addWeeks } from 'date-fns';
+
 
 @injectable()
 export default class SESMailProvider implements IMailProvider {
@@ -23,12 +24,12 @@ export default class SESMailProvider implements IMailProvider {
         apiVersion: '2010-12-01',
         region: 'us-east-2',
       })
-    })
+    });
   }
 
   public async sendMail({ to, from, subject, templateData }: ISendMailDTO): Promise<void> {
 
-    console.log('funfando envio de email!');
+    console.log('sendMail!');
 
     const { name, email } = mailConfig.defaults.from;
 
@@ -45,7 +46,7 @@ export default class SESMailProvider implements IMailProvider {
       subject,
       html: await this.mailTemplateProvider.parse(templateData),
 
-    });
+    }).catch(error => console.log(error));
 
 
   }

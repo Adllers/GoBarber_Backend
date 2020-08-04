@@ -16,8 +16,8 @@ export default {
   defaults: {
     from: {
       email: 'developer@relldaxydev.com',
-      name: 'Adller'
-    }
-  }
+      name: 'Dev Adller'
+    },
+  },
 
 } as IMailConfig;
