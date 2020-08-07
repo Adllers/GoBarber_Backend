@@ -1,6 +1,8 @@
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+
 import { injectable, inject } from 'tsyringe';
 
 import { startOfHour, isBefore, getHours, format } from 'date-fns';
@@ -25,6 +27,9 @@ class CreateAppointmentService {
     @inject('NotificationsRepository')
     private notificationsRepository: INotificationsRepository,
 
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
+
   ) {}
 
   // async function -> return Promise
@@ -47,7 +52,7 @@ class CreateAppointmentService {
       );
     }
 
-    const findAppointmentsInSameDate = await this.appointmentsRepository.findByDate(appointmentDate);
+    const findAppointmentsInSameDate = await this.appointmentsRepository.findByDate(appointmentDate, provider_id);
 
     if (findAppointmentsInSameDate) {
 
@@ -71,6 +76,8 @@ class CreateAppointmentService {
         recipient_id: provider_id,
         content: `Novo agendamento para ${dateFormatted}`,
       })
+
+      await this.cacheProvider.invalidate(`provider-appointments:${provider_id}:${format(appointmentDate, 'yyyy-M-d')}`);
 
       return appointment;
     }

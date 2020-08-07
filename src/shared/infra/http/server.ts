@@ -9,6 +9,7 @@ import routes from './routes/index';
 
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
+import rateLimiter from './middlewares/rateLimiter';
 
 //connection database by typeorm
 import '@shared/infra/typeorm';
@@ -16,6 +17,7 @@ import '@shared/container';
 
 const app = express();
 
+app.use(rateLimiter);
 app.use(cors());
 app.use(express.json());
 //route static files
