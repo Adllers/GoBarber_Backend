@@ -10,7 +10,7 @@ import {
 
 import User from '@modules/users/infra/typeorm/entities/User';
 
-//reference the table
+//reference the name of table
 @Entity('appointments')
 class Appointment{
 

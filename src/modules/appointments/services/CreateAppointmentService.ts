@@ -33,8 +33,7 @@ class CreateAppointmentService {
   ) {}
 
   // async function -> return Promise
-  public async execute({ date, provider_id, user_id } : IRequest): Promise<Appointment> {
-    //
+  public async execute({ date, provider_id, user_id } : IRequest): Promise<Appointment | void> {
 
     const appointmentDate = startOfHour(date);
 
@@ -68,9 +67,10 @@ class CreateAppointmentService {
 
         date: appointmentDate
 
-      });
+      }).catch(err => console.log(err));
 
       const dateFormatted = format(appointmentDate, "dd/MM/yyyy 'às' HH:mm'h'" );
+      console.log(dateFormatted);
 
       await this.notificationsRepository.create({
         recipient_id: provider_id,

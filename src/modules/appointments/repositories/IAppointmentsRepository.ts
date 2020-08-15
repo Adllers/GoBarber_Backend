@@ -6,7 +6,7 @@ import IFindByDayAppointmentsFromProviderDTO from '../dtos/IFindByDayAppointment
 //defining methods that should exist on repository
 export default interface IAppointmentsRepository {
 
-  create(data: ICreateAppointmentDTO): Promise<Appointment>;
+  create(data: ICreateAppointmentDTO): Promise<Appointment | void>;
 
   findByDate(date: Date, provider_id: string): Promise<Appointment | undefined>;
 

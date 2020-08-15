@@ -8,13 +8,14 @@ export default class AppointmentController {
 
   public async create(request: Request , response: Response): Promise<Response> {
     // request.user to know about log from user in any part on system
+
     const user_id = request.user.id;
 
     const { provider_id, date } = request.body;
 
     //const parsedDate = parseISO(date);
 
-    const createAppointment = container.resolve(CreateAppointmentService);
+    const createAppointment = container.resolve(CreateAppointmentService); //><><><>>><><><><><><><
 
     const appointment = await createAppointment.execute({
       date,

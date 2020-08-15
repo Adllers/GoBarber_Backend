@@ -6,7 +6,6 @@ import IFindByMonthAppointmentsFromProviderDTO from '@modules/appointments/dtos/
 import IFindByDayAppointmentsFromProviderDTO from '@modules/appointments/dtos/IFindByDayAppointmentsFromProviderDTO';
 
 import { getRepository, Repository, Raw } from 'typeorm';
-import { startOfMonth, endOfMonth } from 'date-fns';
 
 class AppointmentsRepository  implements IAppointmentsRepository {
 
@@ -16,7 +15,7 @@ class AppointmentsRepository  implements IAppointmentsRepository {
   constructor() {
 
     this.ormRepository = getRepository(Appointment);
-
+    console.log('appRepositoryConstructor');
   }
 
   public async findByDate(date: Date, provider_id: string): Promise <Appointment | undefined> {
@@ -64,10 +63,10 @@ class AppointmentsRepository  implements IAppointmentsRepository {
 
   }
 
-  public async create({date, provider_id, user_id}: ICreateAppointmentDTO): Promise<Appointment>{
+  public async create({date, provider_id, user_id}: ICreateAppointmentDTO): Promise<Appointment | void>{
 
     const appointment= this.ormRepository.create({ provider_id, user_id, date });
-
+    console.log(appointment);
     await this.ormRepository.save(appointment);
 
     return appointment;
