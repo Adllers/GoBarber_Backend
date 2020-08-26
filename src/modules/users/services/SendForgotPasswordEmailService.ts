@@ -35,7 +35,7 @@ class SendForgotPasswordEmailService {
       throw new AppError('User does not exists.');
     }
 
-    const token  = await this.userTokensRepository.generate(user.id);
+    const userToken  = await this.userTokensRepository.generate(user.id);
 
     const forgotPasswordTemplate = path.resolve(__dirname, '..', 'views', 'forgot_password.hbs')
 
@@ -50,7 +50,7 @@ class SendForgotPasswordEmailService {
         file: forgotPasswordTemplate,
         variables: {
           name: user.name,
-          link: `${process.env.APP_WEB_URL}/reset-password?token=${token}`,
+          link: `${process.env.APP_WEB_URL}/reset-password?token=${userToken.token}`,
         }
       },
     });
